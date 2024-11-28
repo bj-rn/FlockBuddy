@@ -1,6 +1,5 @@
 ﻿using CollisionBuddy;
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
+using Stride.Core.Mathematics;
 
 namespace FlockBuddy.Interfaces.Behaviors
 {

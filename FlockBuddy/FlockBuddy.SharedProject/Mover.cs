@@ -1,9 +1,7 @@
 using FlockBuddy.Interfaces;
 using GameTimer;
-using MatrixExtensions;
-using Microsoft.Xna.Framework;
-using PrimitiveBuddy;
-using Vector2Extensions;
+using Stride.Core.Mathematics;
+using VL.Boids;
 
 namespace FlockBuddy
 {
@@ -44,16 +42,17 @@ namespace FlockBuddy
 		/// Get the direction this dude is facing.
 		/// </summary>
 		public float Rotation
-		{
-			get
-			{
-				return Heading.Angle();
-			}
-		}
+        {
+            get
+            {
+                return (float)Math.Atan2(Heading.Y, Heading.X);
+            }
+        }
 
-		#endregion //Properties
 
-		#region Methods
+
+        #endregion //Properties
+        #region Methods
 
 		public Mover(Vector2 position,
 					float radius,
@@ -83,14 +82,14 @@ namespace FlockBuddy
 		protected static float ClampAngle(float angle)
 		{
 			//keep the angle between -180 and 180
-			while (-MathHelper.Pi > angle)
+			while (-MathUtil.Pi > angle)
 			{
-				angle += MathHelper.TwoPi;
+				angle += MathUtil.TwoPi;
 			}
 
-			while (MathHelper.Pi < angle)
+			while (MathUtil.Pi < angle)
 			{
-				angle -= MathHelper.TwoPi;
+				angle -= MathUtil.TwoPi;
 			}
 
 			return angle;
@@ -103,11 +102,12 @@ namespace FlockBuddy
 		/// <returns></returns>
 		protected void RotateHeading(float angle)
 		{
-			//The next few lines use a rotation matrix to rotate the player's heading vector accordingly
-			Matrix rotationMatrix = MatrixExt.Orientation(angle);
+            //The next few lines use a rotation matrix to rotate the player's heading vector accordingly
+            Matrix rotationMatrix = BoidsHelper.Orientation(angle);
 
-			//notice how the direction of rotation has to be determined when creating the rotation matrix
-			Heading = rotationMatrix.Multiply(Heading);
+            //notice how the direction of rotation has to be determined when creating the rotation matrix
+            Heading = rotationMatrix.Multiply(Heading);
+
 		}
 
 		#region drawing
@@ -117,23 +117,23 @@ namespace FlockBuddy
 		/// </summary>
 		/// <param name="prim"></param>
 		/// <param name="color"></param>
-		public virtual void Draw(IPrimitive prim, Color color)
-		{
-			DrawPhysics(prim, color);
-			prim.Line(Position, Position + (Radius * Heading), color);
-		}
+		//public virtual void Draw(IPrimitive prim, Color color)
+		//{
+		//	DrawPhysics(prim, color);
+		//	prim.Line(Position, Position + (Radius * Heading), color);
+		//}
 
 		/// <summary>
 		/// Draw the detection circle and point out all the neighbors
 		/// </summary>
 		/// <param name="curTime"></param>
-		public virtual void DrawNeigborQuery(IPrimitive prim, Color color)
-		{
-		}
+		//public virtual void DrawNeigborQuery(IPrimitive prim, Color color)
+		//{
+		//}
 
-		public virtual void DrawPursuitQuery(IPrimitive prim)
-		{
-		}
+		//public virtual void DrawPursuitQuery(IPrimitive prim)
+		//{
+		//}
 
 		#endregion //drawing
 

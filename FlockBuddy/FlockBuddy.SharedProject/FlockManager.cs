@@ -1,8 +1,5 @@
 ﻿using FlockBuddy.Interfaces;
-using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Stride.Core.Mathematics;
 
 namespace FlockBuddy
 {
@@ -33,7 +30,7 @@ namespace FlockBuddy
 
 		public virtual string Name { get; set; }
 
-		public Color DebugColor { get; private set; }
+		public Color4 DebugColor { get; private set; }
 
 		private float _boidMass = BoidDefaults.BoidMass;
 		public virtual float BoidMass

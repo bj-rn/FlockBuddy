@@ -1,16 +1,8 @@
-using CellSpacePartitionLib;
 using FlockBuddy.Interfaces;
 using FlockBuddy.Interfaces.Behaviors;
-using FlockBuddy.SteeringBehaviors;
 using GameTimer;
-using Microsoft.Xna.Framework;
-using PrimitiveBuddy;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Vector2Extensions;
+using Stride.Core.Mathematics;
+using VL.Boids;
 
 namespace FlockBuddy
 {
@@ -108,22 +100,19 @@ namespace FlockBuddy
 		public float MaxTurnRate { get; set; }
 
 		public override Vector2 Heading
-		{
-			get
-			{
-				return base.Heading;
-			}
-			set
-			{
-				// If the new heading is valid this fumction sets the entity's heading and side vectors accordingly
-				base.Heading = value;
+        {
+            get => base.Heading;
+            set
+            {
+                // If the new heading is valid this fumction sets the entity's heading and side vectors accordingly
+                base.Heading = value;
 
-				//the side vector must always be perpendicular to the heading
-				_side = Heading.Perp();
-			}
-		}
+                //the side vector must always be perpendicular to the heading
+                _side = new Vector2(-Heading.Y, Heading.X);
+            }
+        }
 
-		public Vector2 Side
+        public Vector2 Side
 		{
 			get
 			{
@@ -280,7 +269,7 @@ namespace FlockBuddy
 		protected void UpdateSpeed(Vector2 targetHeading)
 		{
 			//update the speed but make sure vehicle does not exceed maximum velocity
-			Speed = MathHelper.Clamp(Speed + GetSpeedChange(targetHeading), MinSpeed, MaxSpeed);
+			Speed = MathUtil.Clamp(Speed + GetSpeedChange(targetHeading), MinSpeed, MaxSpeed);
 		}
 
 		protected float GetSpeedChange(Vector2 targetHeading)
@@ -365,7 +354,7 @@ namespace FlockBuddy
 			}
 
 			//first determine the angle between the heading vector and the target
-			angle = Vector2Ext.AngleBetweenVectors(Heading, targetHeading);
+			angle = BoidsHelper.AngleBetweenVectors(Heading, targetHeading);
 			angle = ClampAngle(angle);
 
 			//return true if the player is facing the target
@@ -378,7 +367,7 @@ namespace FlockBuddy
 			var maxTurnRateDelta = MaxTurnRate * BoidTimer.TimeDelta;
 
 			//clamp the amount to turn to the max turn rate
-			angle = MathHelper.Clamp(angle, -maxTurnRateDelta, maxTurnRateDelta);
+			angle = MathUtil.Clamp(angle, -maxTurnRateDelta, maxTurnRateDelta);
 			return false;
 		}
 
@@ -513,7 +502,7 @@ namespace FlockBuddy
 
 				if (Behaviors[i].BehaviorType == BehaviorType.Direction)
 				{
-					Debug.WriteLine(steeringForce.ToString());
+                    System.Diagnostics.Trace.WriteLine(steeringForce.ToString());
 				}
 			}
 
@@ -756,9 +745,9 @@ namespace FlockBuddy
 			}
 			else
 			{
-				//add it to the steering force
-				appliedForce = forceToAdd.Normalized();
-				appliedForce *= magnitudeRemaining;
+                //add it to the steering force
+                appliedForce = Vector2.Normalize(forceToAdd);
+                appliedForce *= magnitudeRemaining;
 				runningTot += appliedForce;
 				return false;
 			}
@@ -773,89 +762,89 @@ namespace FlockBuddy
 		/// </summary>
 		/// <param name="prim"></param>
 		/// <param name="color"></param>
-		public override void Draw(IPrimitive prim, Color color)
-		{
-			base.Draw(prim, color);
-		}
+		//public override void Draw(IPrimitive prim, Color color)
+		//{
+		//	base.Draw(prim, color);
+		//}
 
 		/// <summary>
 		/// Draw the detection circle and point out all the neighbors
 		/// </summary>
 		/// <param name="curTime"></param>
-		public override void DrawNeigborQuery(IPrimitive prim, Color color)
-		{
-			////draw the query cells
-			//MyFlock.CellSpace.RenderCellIntersections(prim, Position, QueryRadius, Color.Green);
+		//public override void DrawNeigborQuery(IPrimitive prim, Color color)
+		//{
+		//	////draw the query cells
+		//	//MyFlock.CellSpace.RenderCellIntersections(prim, Position, QueryRadius, Color.Green);
 
-			////get the query rectangle
-			//var queryRect = CellSpacePartition<Boid>.CreateQueryBox(Position, QueryRadius);
-			//prim.Rectangle(queryRect, Color.White);
+		//	////get the query rectangle
+		//	//var queryRect = CellSpacePartition<Boid>.CreateQueryBox(Position, QueryRadius);
+		//	//prim.Rectangle(queryRect, Color.White);
 
-			//get the query circle
-			prim.Circle(Position, NeighborsQueryRadius, color);
+		//	//get the query circle
+		//	prim.Circle(Position, NeighborsQueryRadius, color);
 
-			////draw the neighbor dudes
-			//List<IMover> neighbors = MyFlock.FindNeighbors(this, QueryRadius);
-			//foreach (var neighbor in neighbors)
-			//{
-			//	prim.Circle(neighbor.Position, neighbor.Radius, Color.Red);
-			//}
-		}
+		//	////draw the neighbor dudes
+		//	//List<IMover> neighbors = MyFlock.FindNeighbors(this, QueryRadius);
+		//	//foreach (var neighbor in neighbors)
+		//	//{
+		//	//	prim.Circle(neighbor.Position, neighbor.Radius, Color.Red);
+		//	//}
+		//}
 
-		public override void DrawPursuitQuery(IPrimitive prim)
-		{
-			var pursuit = Behaviors.FirstOrDefault(x => x.BehaviorType == BehaviorType.Pursuit) as Pursuit;
+		//public override void DrawPursuitQuery(IPrimitive prim)
+		//{
+		//	var pursuit = Behaviors.FirstOrDefault(x => x.BehaviorType == BehaviorType.Pursuit) as Pursuit;
 
-			if (null != pursuit && pursuit.Prey != null)
-			{
-				prim.Circle(Position, PreyQueryRadius, Color.Red);
-			}
-			else
-			{
-				prim.Circle(Position, PreyQueryRadius, Color.White);
-			}
-		}
+		//	if (null != pursuit && pursuit.Prey != null)
+		//	{
+		//		prim.Circle(Position, PreyQueryRadius, Color.Red);
+		//	}
+		//	else
+		//	{
+		//		prim.Circle(Position, PreyQueryRadius, Color.White);
+		//	}
+		//}
 
-		public void DrawTotalForce(IPrimitive prim, Color color)
-		{
-			//draw the force being applied
-			prim.Line(Position, Position + _totalForce, color);
-		}
+		//public void DrawTotalForce(IPrimitive prim, Color color)
+		//{
+		//	//draw the force being applied
+		//	prim.Line(Position, Position + _totalForce, color);
+		//}
 
-		public void DrawWallFeelers(IPrimitive prim, Color color)
-		{
-			//get the wall avoidance steering behavior
-			var behav = Behaviors.Where(x => x is WallAvoidance).FirstOrDefault();
+		//public void DrawWallFeelers(IPrimitive prim, Color color)
+		//{
+		//	//get the wall avoidance steering behavior
+		//	var behav = Behaviors.Where(x => x is WallAvoidance).FirstOrDefault();
 
-			//draw all the whiskers
-			var wallAvoidance = behav as IWallBehavior;
-			if (null != wallAvoidance)
-			{
-				foreach (var whisker in wallAvoidance.Feelers)
-				{
-					prim.Line(Position, whisker, color);
-				}
-			}
-		}
+		//	//draw all the whiskers
+		//	var wallAvoidance = behav as IWallBehavior;
+		//	if (null != wallAvoidance)
+		//	{
+		//		foreach (var whisker in wallAvoidance.Feelers)
+		//		{
+		//			prim.Line(Position, whisker, color);
+		//		}
+		//	}
+		//}
 
 		/// <summary>
 		/// draw the current velocity
 		/// </summary>
 		/// <param name="prim"></param>
 		/// <param name="color"></param>
-		public void DrawVelocity(IPrimitive prim, Color color)
-		{
-			prim.Line(Position, Position + Velocity, color);
-		}
+		//public void DrawVelocity(IPrimitive prim, Color color)
+		//{
+		//	prim.Line(Position, Position + Velocity, color);
+		//}
 
-		public void DrawSpeedForce(IPrimitive prim, Color color)
-		{
-			//draw a circle at the MaxForce line
-			//prim.Circle(Position, MaxForce, color);
+		//public void DrawSpeedForce(IPrimitive prim, Color color)
+		//{
+		//	//draw a circle at the MaxForce line
+		//	//prim.Circle(Position, MaxForce, color);
 
-			//draw the speed force being applied
-			prim.Line(Position, Position + _speedForce, color);
-		}
+		//	//draw the speed force being applied
+		//	prim.Line(Position, Position + _speedForce, color);
+		//}
 
 		#endregion //Drawing
 	}

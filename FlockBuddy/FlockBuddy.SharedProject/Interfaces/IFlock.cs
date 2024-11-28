@@ -1,9 +1,8 @@
 ﻿using CellSpacePartitionLib;
 using CollisionBuddy;
 using GameTimer;
-using Microsoft.Xna.Framework;
-using PrimitiveBuddy;
-using System.Collections.Generic;
+using Stride.Core.Mathematics;
+
 
 namespace FlockBuddy.Interfaces
 {
@@ -87,9 +86,9 @@ namespace FlockBuddy.Interfaces
 
 		void AddDefaultWalls(DefaultWalls wallsType, Rectangle rect);
 
-		void Draw(IPrimitive prim, Color color);
-		void DrawCells(IPrimitive prim);
-		void DrawWhiskers(IPrimitive prim, Color color);
+		//void Draw(IPrimitive prim, Color color);
+		//void DrawCells(IPrimitive prim);
+		//void DrawWhiskers(IPrimitive prim, Color color);
 
 		void AddFlockToGroup(IFlock flock, FlockGroup group);
 

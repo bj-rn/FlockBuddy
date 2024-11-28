@@ -1,9 +1,8 @@
 using FlockBuddy.Interfaces;
 using FlockBuddy.Interfaces.Behaviors;
-using MatrixExtensions;
-using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
+using Stride.Core.Mathematics;
+using VL.Boids;
+
 
 namespace FlockBuddy.SteeringBehaviors
 {

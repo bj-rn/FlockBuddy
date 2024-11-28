@@ -1,5 +1,5 @@
 ﻿using FlockBuddy.Interfaces;
-using Microsoft.Xna.Framework;
+using Stride.Core.Mathematics;
 
 namespace FlockBuddy.SteeringBehaviors
 {

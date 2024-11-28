@@ -1,10 +1,8 @@
 using CollisionBuddy;
 using FlockBuddy.Interfaces;
 using FlockBuddy.Interfaces.Behaviors;
-using MatrixExtensions;
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
-using Vector2Extensions;
+using Stride.Core.Mathematics;
+using VL.Boids;
 
 namespace FlockBuddy.SteeringBehaviors
 {
@@ -79,7 +77,7 @@ namespace FlockBuddy.SteeringBehaviors
 				//run through each wall checking for any intersection points
 				for (int j = 0; j < Walls.Count; j++)
 				{
-					if (Vector2Ext.LineIntersection2D(Owner.Position,
+					if (BoidsHelper.LineIntersection2D(Owner.Position,
 										   Feelers[i],
 										   Walls[j].Start,
 										   Walls[j].End,
@@ -110,11 +108,11 @@ namespace FlockBuddy.SteeringBehaviors
 			Feelers.Add(Owner.Position + (Owner.WallQueryRadius * Owner.Heading));
 
 			//feeler to left
-			Vector2 temp = Vec2DRotateAroundOrigin(Owner.Heading, MathHelper.PiOver2 * 3.5f);
+			Vector2 temp = Vec2DRotateAroundOrigin(Owner.Heading, MathUtil.PiOverTwo * 3.5f);
 			Feelers.Add(Owner.Position + ((Owner.WallQueryRadius * 0.5f) * temp));
 
 			//feeler to right
-			temp = Vec2DRotateAroundOrigin(Owner.Heading, MathHelper.PiOver2 * 0.5f);
+			temp = Vec2DRotateAroundOrigin(Owner.Heading, MathUtil.PiOverTwo * 0.5f);
 			Feelers.Add(Owner.Position + ((Owner.WallQueryRadius * 0.5f) * temp));
 		}
 
@@ -127,7 +125,7 @@ namespace FlockBuddy.SteeringBehaviors
 		Vector2 Vec2DRotateAroundOrigin(Vector2 v, float ang)
 		{
 			//create a rotation matrix
-			Matrix mat = MatrixExt.Orientation(ang);
+			Matrix mat = BoidsHelper.Orientation(ang);
 
 			//now transform the object's vertices
 			return mat.Multiply(v);

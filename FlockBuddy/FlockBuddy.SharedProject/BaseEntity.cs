@@ -1,7 +1,7 @@
 using FlockBuddy.Interfaces;
 using GameTimer;
-using Microsoft.Xna.Framework;
-using PrimitiveBuddy;
+using Stride.Core.Mathematics;
+
 
 namespace FlockBuddy
 {
@@ -78,10 +78,10 @@ namespace FlockBuddy
 		/// </summary>
 		/// <param name="prim">basic ptimitive to draw this dude</param>
 		/// <param name="color">teh color to draw him</param>
-		public virtual void DrawPhysics(IPrimitive prim, Color color)
-		{
-			prim.Circle(Position, Radius, color);
-		}
+		//public virtual void DrawPhysics(IPrimitive prim, Color color)
+		//{
+		//	prim.Circle(Position, Radius, color);
+		//}
 
 		#endregion //Methods
 	}

@@ -2,10 +2,8 @@ using CellSpacePartitionLib;
 using CollisionBuddy;
 using FlockBuddy.Interfaces;
 using GameTimer;
-using Microsoft.Xna.Framework;
-using PrimitiveBuddy;
-using System;
-using System.Collections.Generic;
+using Stride.Core.Mathematics;
+
 
 namespace FlockBuddy
 {
@@ -615,66 +613,66 @@ namespace FlockBuddy
 
 		#region Drawing
 
-		public void Draw(IPrimitive prim, Color color)
-		{
-			foreach (Boid boid in Boids)
-			{
-				boid.Draw(prim, color);
-				boid.DrawSpeedForce(prim, Color.White);
-			}
-		}
+		//public void Draw(IPrimitive prim, Color color)
+		//{
+		//	foreach (Boid boid in Boids)
+		//	{
+		//		boid.Draw(prim, color);
+		//		boid.DrawSpeedForce(prim, Color.White);
+		//	}
+		//}
 
 		/// <summary>
 		/// draw a bunch of debug info
 		/// </summary>
 		/// <param name="prim"></param>
-		public void DrawCells(IPrimitive prim)
-		{
-			if (UseCellSpace)
-			{
-				CellSpace.RenderCells(prim);
-			}
-		}
+		//public void DrawCells(IPrimitive prim)
+		//{
+		//	if (UseCellSpace)
+		//	{
+		//		CellSpace.RenderCells(prim);
+		//	}
+		//}
 
 		/// <summary>
 		/// draw the vectors of all the boids
 		/// </summary>
 		/// <param name="prim"></param>
-		public void DrawTotalForce(IPrimitive prim, Color color)
-		{
-			foreach (Boid boid in Boids)
-			{
-				boid.DrawTotalForce(prim, color);
-			}
-		}
+		//public void DrawTotalForce(IPrimitive prim, Color color)
+		//{
+		//	foreach (Boid boid in Boids)
+		//	{
+		//		boid.DrawTotalForce(prim, color);
+		//	}
+		//}
 
 		/// <summary>
 		/// draw the wall whiskers of all the boids
 		/// </summary>
 		/// <param name="prim"></param>
-		public void DrawWhiskers(IPrimitive prim, Color color)
-		{
-			foreach (Boid boid in Boids)
-			{
-				boid.DrawWallFeelers(prim, color);
-			}
-		}
+		//public void DrawWhiskers(IPrimitive prim, Color color)
+		//{
+		//	foreach (Boid boid in Boids)
+		//	{
+		//		boid.DrawWallFeelers(prim, color);
+		//	}
+		//}
 
 		/// <summary>
 		/// draw all the walls 
 		/// </summary>
 		/// <param name="prim"></param>
-		public void DrawWalls(IPrimitive prim)
-		{
-			foreach (var wall in Walls)
-			{
-				var line = wall as Line;
-				if (null != line)
-				{
-					line.Draw(prim, Color.Black);
-				}
-			}
-		}
+		//public void DrawWalls(IPrimitive prim)
+		//{
+		//	foreach (var wall in Walls)
+		//	{
+		//		var line = wall as Line;
+		//		if (null != line)
+		//		{
+		//			line.Draw(prim, Color.Black);
+		//		}
+		//	}
+		//}
 
 		#endregion //Drawing
 

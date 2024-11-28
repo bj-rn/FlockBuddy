@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Stride.Core.Mathematics;
+
 
 namespace FlockBuddy.Interfaces
 {
